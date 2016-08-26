@@ -16,7 +16,8 @@ class Course(models.Model):
 
 	name = models.CharField('Nome', max_length=100)
 	slug = models.SlugField('Atalho')
-	description = models.TextField(u'Descrição', blank=True)
+	description = models.TextField(u'Descrição simples', blank=True)
+	about = models.TextField('Sobre o curso', blank=True)
 	start_date = models.DateField(u'Data de início', blank=True, null=True)
 	image = models.ImageField(upload_to='courses/images', verbose_name='Imagem', blank=True, null=True)
 	created_at = models.DateTimeField('Criado em', auto_now_add=True)
@@ -26,6 +27,10 @@ class Course(models.Model):
 
 	def __unicode__(self):
 		return self.name
+
+	@models.permalink
+	def get_absolute_url(self):
+		return ('courses:details', (), {'slug': self.slug})
 
 	class Meta:
 		verbose_name = 'Curso'
